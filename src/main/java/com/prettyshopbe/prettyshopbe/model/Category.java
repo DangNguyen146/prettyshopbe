@@ -2,10 +2,12 @@
 
 
  import jakarta.persistence.*;
- import jakarta.validation.constraints.NotBlank;
+
+ import javax.validation.constraints.NotBlank;
+
 
  @Entity
- @Table(name = "category")
+ @Table(name = "categories")
  public class Category {
 
      @Id
@@ -23,12 +25,15 @@
      public Category() {
      }
 
-     public Integer getId() {
-         return id;
+     public Category(@NotBlank String categoryName, @NotBlank String description) {
+         this.categoryName = categoryName;
+         this.description = description;
      }
 
-     public void setId(Integer id) {
-         this.id = id;
+     public Category(@NotBlank String categoryName, @NotBlank String description, @NotBlank String imageUrl) {
+         this.categoryName = categoryName;
+         this.description = description;
+         this.imageUrl = imageUrl;
      }
 
      public String getCategoryName() {
