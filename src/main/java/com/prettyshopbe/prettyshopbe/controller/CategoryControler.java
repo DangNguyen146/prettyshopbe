@@ -1,6 +1,8 @@
  package com.prettyshopbe.prettyshopbe.controller;
 
  import com.prettyshopbe.prettyshopbe.common.ApiResponse;
+
+
  import com.prettyshopbe.prettyshopbe.model.Category;
  import com.prettyshopbe.prettyshopbe.service.CategoryService;
  import com.prettyshopbe.prettyshopbe.until.Helper;
@@ -15,11 +17,11 @@
 
  import javax.validation.Valid;
  import java.util.List;
+ import java.util.Optional;
 
 
  @RestController
  @RequestMapping("/category")
-
  public class CategoryControler {
      @Autowired
      private CategoryService categoryService;
@@ -29,6 +31,16 @@
      public ResponseEntity<List<Category>> getCategories() {
          List<Category> body = categoryService.listCategories();
          return new ResponseEntity<List<Category>>(body, HttpStatus.OK);
+     }
+
+     @GetMapping("/{categoryID}")
+     public ResponseEntity<Category> getCategory(@PathVariable("categoryID") Integer categoryID) {
+         Optional<Category> category = categoryService.readCategory(categoryID);
+         if (category.isPresent()) {
+             return ResponseEntity.ok(category.get());
+         } else {
+             return ResponseEntity.notFound().build();
+         }
      }
 
      @PostMapping("/create")
