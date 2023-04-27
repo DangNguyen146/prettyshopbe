@@ -1,6 +1,7 @@
  package com.prettyshopbe.prettyshopbe.service;
 
  import com.prettyshopbe.prettyshopbe.model.Category;
+ import com.prettyshopbe.prettyshopbe.model.Product;
  import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
  import jakarta.transaction.Transactional;
  import org.springframework.stereotype.Service;
@@ -40,5 +41,8 @@
          category.setImageUrl(newCategory.getImageUrl());
 
          categoryRepo.save(category);
+     }
+     public Optional<Product> findById(Long id) {
+         return categoryRepo.findById(id);
      }
  }

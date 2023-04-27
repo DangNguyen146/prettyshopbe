@@ -5,6 +5,7 @@ import com.prettyshopbe.prettyshopbe.common.ApiResponse;
 
 import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.model.Category;
+import com.prettyshopbe.prettyshopbe.model.Product;
 import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
 import com.prettyshopbe.prettyshopbe.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,26 @@ public class ProductController {
         Page<ProductDto> products = productService.listProducts(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+    @GetMapping("/{categoryid}")
+    public ResponseEntity<Page<ProductDto>> getProductsByIdCategoryController(@PathVariable("categoryid") Integer categoryId,
+                                                                  @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                  @RequestParam(value = "size", defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products = productService.getProductsByCategoryId(categoryId, pageable);
+        Page<ProductDto> productDtos = products.map(ProductDto::new);
+        return ResponseEntity.ok(productDtos);
+    }
+    @GetMapping("/getproduct/{id}")
+    public ResponseEntity<ProductDto> getProductsByIdController(@PathVariable("id") Integer id) {
+        Optional<Product> product = productService.findById(id);
+        if (product.isPresent()) {
+            ProductDto productDto = new ProductDto(product.get());
+            return ResponseEntity.ok(productDto);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> createProduct(@RequestBody ProductDto productDto){
         Optional<Category> optionalCategory = categoryRepo.findById(productDto.getCategoryId());

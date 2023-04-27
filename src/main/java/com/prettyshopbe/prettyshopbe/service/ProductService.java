@@ -4,6 +4,7 @@ package com.prettyshopbe.prettyshopbe.service;
 import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.model.Category;
 import com.prettyshopbe.prettyshopbe.model.Product;
+import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
 import com.prettyshopbe.prettyshopbe.respository.ProducRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,9 @@ import com.prettyshopbe.prettyshopbe.exceptions.ProductNotExistException;
 public class ProductService {
     @Autowired
     ProducRespository producRespository;
+
+    @Autowired
+    CategoryRepo categoryRepo;
 
     public List<ProductDto> listProducts() {
         List<Product> products = producRespository.findAll();
@@ -46,6 +50,11 @@ public class ProductService {
         return product;
     }
 
+
+    public Page<Product> getProductsByCategoryId(Integer categoryId, Pageable pageable) {
+        return producRespository.findByCategoryId(categoryId, pageable);
+    }
+
     public void addProduct(ProductDto productDto, Category category) {
         Product product = getProductFromDto(productDto, category);
         producRespository.save(product);
@@ -62,5 +71,9 @@ public class ProductService {
         if (optionalProduct.isEmpty())
             throw new ProductNotExistException("Product id is invalid " + productId);
         return optionalProduct.get();
+    }
+
+    public Optional<Product> findById(Integer id) {
+        return producRespository.findById(id);
     }
 }
