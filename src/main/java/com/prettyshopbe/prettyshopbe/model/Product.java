@@ -34,6 +34,7 @@ public class Product {
     private List<Cart> carts;
 
     public Product(ProductDto productDto, Category category) {
+        this.id= productDto.getId();
         this.name = productDto.getName();
         this.imageURL = productDto.getImageURL();
         this.description = productDto.getDescription();
