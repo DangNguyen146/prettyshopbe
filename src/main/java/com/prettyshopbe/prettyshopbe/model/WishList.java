@@ -1,5 +1,6 @@
 package com.prettyshopbe.prettyshopbe.model;
 
+import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -27,10 +28,13 @@ public class WishList {
     }
 
     public WishList(User user, Product product) {
+
         this.user = user;
         this.product = product;
         this.createdDate = new Date();
     }
+
+
 
     public Integer getId() {
         return id;
@@ -61,6 +65,6 @@ public class WishList {
     }
 
     public void setProduct(Product product) {
-        this.product = product;
+       this.product = product;
     }
 }

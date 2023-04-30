@@ -60,7 +60,11 @@
 			<artifactId>stripe-java</artifactId>
 			<version>22.16.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+        </dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>
