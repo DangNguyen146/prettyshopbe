@@ -11,6 +11,7 @@ import com.prettyshopbe.prettyshopbe.enums.Role;
 import com.prettyshopbe.prettyshopbe.exceptions.AuthenticationFailException;
 import com.prettyshopbe.prettyshopbe.exceptions.CustomException;
 import com.prettyshopbe.prettyshopbe.model.AuthenticationToken;
+import com.prettyshopbe.prettyshopbe.model.Comment;
 import com.prettyshopbe.prettyshopbe.model.User;
 import com.prettyshopbe.prettyshopbe.respository.UserRepository;
 import com.prettyshopbe.prettyshopbe.until.Helper;
@@ -22,9 +23,10 @@ import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.slf4j.Logger;
+import java.util.Optional;
 
-import static com.prettyshopbe.prettyshopbe.config.MessageStrings.USER_CREATED;
+import org.slf4j.Logger;
+import org.webjars.NotFoundException;
 
 @Service
 public class UserService {
@@ -64,7 +66,7 @@ public class UserService {
             // save token in database
             authenticationService.saveConfirmationToken(authenticationToken);
             // success in creating
-            return new ResponseDto(ResponseStatus.success.toString(), USER_CREATED);
+            return new ResponseDto(ResponseStatus.SUCCESS.toString());
         } catch (Exception e) {
             // handle signup error
             throw new CustomException(e.getMessage());
@@ -131,7 +133,7 @@ public class UserService {
             createdUser = userRepository.save(user);
             final AuthenticationToken authenticationToken = new AuthenticationToken(createdUser);
             authenticationService.saveConfirmationToken(authenticationToken);
-            return new ResponseDto(ResponseStatus.success.toString(), USER_CREATED);
+            return new ResponseDto(ResponseStatus.SUCCESS.toString());
         } catch (Exception e) {
             // handle user creation fail error
             throw new CustomException(e.getMessage());
@@ -158,4 +160,5 @@ public class UserService {
         }
         return false;
     }
+
 }
