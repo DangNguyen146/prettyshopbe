@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/user")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -30,6 +31,14 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> findUserById(@PathVariable Integer id, @RequestParam("token") String token) throws AuthenticationFailException {
+        authenticationService.authenticate(token);
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
     @GetMapping("/all")
     public List<User> findAllUser(@RequestParam("token") String token) throws AuthenticationFailException {
@@ -57,5 +66,60 @@ public class UserController {
     @PostMapping("/signIn")
     public SignInResponseDto Signup(@RequestBody SignInDto signInDto) throws CustomException {
         return userService.signIn(signInDto);
+    }
+
+    @PutMapping("/updateuseruser")
+    public ResponseEntity<User> updateUserForUSer(@RequestParam("token") String token) throws AuthenticationFailException {
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+
+        if (!userRepository.existsById(user.getId())) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        User updatedUser = userRepository.save(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateuseradmin/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Integer id,
+                                           @RequestBody User newUser,
+                                           @RequestParam("token") String token) throws AuthenticationFailException {
+
+        authenticationService.authenticate(token);
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        User oldUser = userOptional.get();
+        // Cập nhật các thuộc tính mới của đối tượng newUser
+        if (newUser.getFirstName() != null) {
+            oldUser.setFirstName(newUser.getFirstName());
+        }
+        if (newUser.getLastName() != null) {
+            oldUser.setLastName(newUser.getLastName());
+        }
+        if (newUser.getEmail() != null) {
+            oldUser.setEmail(newUser.getEmail());
+        }
+        if (newUser.getPassword() != null) {
+            oldUser.setPassword(newUser.getPassword());
+        }
+        if (newUser.getRole() != null) {
+            oldUser.setRole(newUser.getRole());
+        }
+        userRepository.save(oldUser);
+
+        return new ResponseEntity<>(oldUser, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Integer id, @RequestParam("token") String token) throws AuthenticationFailException {
+        authenticationService.authenticate(token);
+        if (!userRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

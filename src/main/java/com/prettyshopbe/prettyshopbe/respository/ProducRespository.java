@@ -14,4 +14,9 @@ public interface ProducRespository extends JpaRepository<Product, Integer> {
     Page<Product> findByCategoryId(Integer categoryId, Pageable pageable);
     Optional<Product> findById(Integer id);
 
+    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+
+
+
 }

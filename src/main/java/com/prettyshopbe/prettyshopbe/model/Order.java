@@ -67,6 +67,18 @@ public class Order {
         return sessionId;
     }
 
+    @Column(name = "status")
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String setStatus(String status) {
+        this.status = status;
+        return status;
+    }
+
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }

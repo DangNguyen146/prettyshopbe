@@ -3,16 +3,22 @@ package com.prettyshopbe.prettyshopbe.service;
 import com.prettyshopbe.prettyshopbe.config.MessageStrings;
 import com.prettyshopbe.prettyshopbe.exceptions.AuthenticationFailException;
 import com.prettyshopbe.prettyshopbe.model.AuthenticationToken;
+import com.prettyshopbe.prettyshopbe.model.Category;
 import com.prettyshopbe.prettyshopbe.model.User;
 import com.prettyshopbe.prettyshopbe.respository.TokenRepository;
+import com.prettyshopbe.prettyshopbe.respository.UserRepository;
 import com.prettyshopbe.prettyshopbe.until.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
     @Autowired
     TokenRepository repository;
+    @Autowired
+    UserRepository userRepository;
 
     public void saveConfirmationToken(AuthenticationToken authenticationToken) {
         repository.save(authenticationToken);
@@ -40,5 +46,7 @@ public class AuthenticationService {
             throw new AuthenticationFailException(MessageStrings.AUTH_TOEKN_NOT_VALID);
         }
     }
+
+
 }
 

@@ -95,8 +95,10 @@ public class UserService {
             // token not present
             throw new CustomException("token not present");
         }
+        // Lấy firstName từ user trong CSDL
+        String firstName = user.getFirstName();
 
-        return new SignInResponseDto ("success", token.getToken());
+        return new SignInResponseDto("success", token.getToken(), firstName, user.getLastName());
     }
 
 

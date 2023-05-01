@@ -6,7 +6,9 @@ import com.prettyshopbe.prettyshopbe.common.ApiResponse;
 import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.model.Category;
 import com.prettyshopbe.prettyshopbe.model.Product;
+import com.prettyshopbe.prettyshopbe.model.User;
 import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
+import com.prettyshopbe.prettyshopbe.service.AuthenticationService;
 import com.prettyshopbe.prettyshopbe.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +36,9 @@ public class ProductController {
 
     @Autowired
     CategoryRepo categoryRepo;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @GetMapping("/")
     public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -84,4 +89,25 @@ public class ProductController {
         productService.updateProduct(productID, productDto, category);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Product has been updated"), HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductDto>> searchProducts(@RequestParam(value = "keyword") String keyword,
+                                                           @RequestParam(value = "page", defaultValue = "0") int page,
+                                                           @RequestParam(value = "size", defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products = productService.searchProducts(keyword, pageable);
+        Page<ProductDto> productDtos = products.map(ProductDto::new);
+        return ResponseEntity.ok(productDtos);
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<ApiResponse> deleteProduct(@RequestParam("token") String token, @PathVariable("productId") Integer productId) {
+        authenticationService.authenticate(token);
+        // retrieve user
+        User user = authenticationService.getUser(token);
+
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(new ApiResponse(true, "Product has been deleted"), HttpStatus.OK);
+    }
+
 }

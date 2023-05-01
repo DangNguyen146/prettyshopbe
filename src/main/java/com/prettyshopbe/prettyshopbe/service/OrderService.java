@@ -3,10 +3,9 @@ package com.prettyshopbe.prettyshopbe.service;
 import com.prettyshopbe.prettyshopbe.dto.cart.CartDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.CartItemDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.CheckoutItemDto;
+import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.exceptions.OrderNotFoundException;
-import com.prettyshopbe.prettyshopbe.model.Order;
-import com.prettyshopbe.prettyshopbe.model.OrderItem;
-import com.prettyshopbe.prettyshopbe.model.User;
+import com.prettyshopbe.prettyshopbe.model.*;
 import com.prettyshopbe.prettyshopbe.respository.OrderItemsRepository;
 import com.prettyshopbe.prettyshopbe.respository.OrderRepository;
 import com.stripe.Stripe;
@@ -16,6 +15,9 @@ import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -126,12 +128,32 @@ public class OrderService {
         return orderRepository.findAllByUserOrderByCreatedDateDesc(user);
     }
 
+    public List<Order> listAllOrders(Pageable pageable) {
+        Sort sort = Sort.by("createdDate").descending(); // sắp xếp theo thuộc tính 'createdDate' giảm dần
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        return orderRepository.findAll(pageRequest).getContent();
+    }
+
+
+
+
 
     public Order getOrder(Integer orderId) throws OrderNotFoundException {
         Optional<Order> order = orderRepository.findById(orderId);
         if (order.isPresent()) {
             return order.get();
+
         }
         throw new OrderNotFoundException("Order not found");
     }
+
+    public Order saveOrder(Order order) {
+        orderRepository.save(order);
+        return order;
+    }
+    public Order updateProduct(String status, Order order) {
+        order.setStatus(status);
+        return orderRepository.save(order);
+    }
+
 }

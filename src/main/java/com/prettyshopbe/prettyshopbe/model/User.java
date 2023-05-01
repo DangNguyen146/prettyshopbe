@@ -26,6 +26,7 @@ public class User {
     private Role role;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @JsonIgnore
@@ -100,5 +101,11 @@ public class User {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+
+    public boolean isAdmin() {
+        return (role == Role.admin);
+    }
+
 }
 

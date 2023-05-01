@@ -14,11 +14,16 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.data.domain.PageRequest.of;
 
 @RestController
 @RequestMapping("/order")
@@ -28,6 +33,7 @@ public class OrderController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
 
     // get all orders
     @GetMapping("/")
@@ -41,6 +47,27 @@ public class OrderController {
 
         return new ResponseEntity<>(orderDtoList, HttpStatus.OK);
     }
+
+    // get all orders
+    @GetMapping("/getallorder")
+    public ResponseEntity<List<Order>> getAllAdminOrders(
+            @RequestParam("token") String token,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdDate,desc") String[] sort // đổi giá trị mặc định của tham số sắp xếp
+    ) throws AuthenticationFailException {
+        // validate token
+        authenticationService.authenticate(token);
+        // retrieve user
+        User user = authenticationService.getUser(token);
+        // get orders
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort[0]).descending());
+        List<Order> orders = orderService.listAllOrders(pageable);
+
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+
 
     // get orderitems for an order
     @GetMapping("/{id}")
@@ -80,4 +107,25 @@ public class OrderController {
         orderService.placeOrder(user, sessionId);
         return new ResponseEntity<>(new ApiResponse(true, "Order has been placed"), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable Integer id,
+                                                   @RequestParam("token") String token,
+                                                   @RequestBody String status) throws AuthenticationFailException {
+        // authenticate and retrieve user
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+
+        // get the order by ID
+        Order existingOrder = orderService.getOrder(id);
+
+        // check if user has permission to update the order
+        if (user.isAdmin()) {
+            // update the order status
+            existingOrder.setStatus(status);
+            orderService.updateProduct(status,existingOrder);
+        }
+        return new ResponseEntity<>(existingOrder, HttpStatus.OK);
+    }
+
 }

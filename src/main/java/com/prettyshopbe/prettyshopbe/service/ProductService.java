@@ -76,4 +76,13 @@ public class ProductService {
     public Optional<Product> findById(Integer id) {
         return producRespository.findById(id);
     }
+
+    public Page<Product> searchProducts(String keyword, Pageable pageable) {
+        return producRespository.findByNameContainingIgnoreCase(keyword, pageable);
+    }
+
+    public void deleteProduct(Integer productID) {
+        producRespository.deleteById(productID);
+    }
+
 }

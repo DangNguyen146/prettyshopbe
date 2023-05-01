@@ -4,6 +4,8 @@
  import com.prettyshopbe.prettyshopbe.model.Product;
  import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
  import jakarta.transaction.Transactional;
+ import org.springframework.data.domain.Page;
+ import org.springframework.data.domain.Pageable;
  import org.springframework.stereotype.Service;
 
  import java.util.List;
@@ -42,7 +44,11 @@
 
          categoryRepo.save(category);
      }
-     public Optional<Product> findById(Long id) {
+     public Optional<Category> findById(Long id) {
          return categoryRepo.findById(id);
+     }
+
+     public Page<Category> searchCategoryByName(String categoryName, Pageable pageable) {
+         return categoryRepo.findByCategoryNameContainingIgnoreCase(categoryName, pageable);
      }
  }

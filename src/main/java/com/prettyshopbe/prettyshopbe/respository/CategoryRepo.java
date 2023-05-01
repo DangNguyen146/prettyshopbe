@@ -2,6 +2,8 @@
 
  import com.prettyshopbe.prettyshopbe.model.Category;
  import com.prettyshopbe.prettyshopbe.model.Product;
+ import org.springframework.data.domain.Page;
+ import org.springframework.data.domain.Pageable;
  import org.springframework.data.jpa.repository.JpaRepository;
  import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,7 @@
  public interface CategoryRepo extends JpaRepository<Category, Integer> {
      Category findByCategoryName(String categoryName);
 
-     Optional<Product> findById(Long id);
+     Optional<Category> findById(Long id);
+
+     Page<Category> findByCategoryNameContainingIgnoreCase(String categoryName, Pageable pageable);
  }
