@@ -181,7 +181,7 @@ public class UserController {
 
 
         String username = "19521317@gm.uit.edu.vn"; // replace with your email address
-        String password = "konhopassthi09."; // replace with your email password
+        String password = "sdsdajndjksndkjankj"; // replace with your email password
 
         // Authenticate the user
         Authenticator auth = new Authenticator() {
