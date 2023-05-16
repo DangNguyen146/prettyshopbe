@@ -85,4 +85,49 @@ public class ProductService {
         producRespository.deleteById(productID);
     }
 
+    public void addProductQuantityBySize(Integer productId, String size, Integer quantity) {
+        Optional<Product> optionalProduct = producRespository.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            List<String> sizeList = product.getSize();
+            List<Integer> quantityBySizesList = product.getQuantityBySizes();
+            int index = sizeList.indexOf(size);
+            if (index != -1) {
+                quantityBySizesList.set(index, quantityBySizesList.get(index) + quantity);
+            } else {
+                sizeList.add(size);
+                quantityBySizesList.add(quantity);
+            }
+            producRespository.save(product);
+        }
+    }
+
+    public void updateProductQuantityBySize(Integer productId, String size, Integer quantity) {
+        Optional<Product> optionalProduct = producRespository.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            List<String> sizeList = product.getSize();
+            List<Integer> quantityBySizes = product.getQuantityBySizes();
+            int index = sizeList.indexOf(size);
+            if (index != -1) {
+                quantityBySizes.set(index, quantity);
+            }
+            producRespository.save(product);
+        }
+    }
+
+    public void deleteProductQuantityBySize(Integer productId, String size) {
+        Optional<Product> optionalProduct = producRespository.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            List<String> sizeList = product.getSize();
+            List<Integer> quantityBySizes = product.getQuantityBySizes();
+            int index = sizeList.indexOf(size);
+            if (index != -1) {
+                sizeList.remove(index);
+                quantityBySizes.remove(index);
+            }
+            producRespository.save(product);
+        }
+    }
 }

@@ -37,9 +37,8 @@ public class CartController {
         User user = authenticationService.getUser(token);
         Product product = productService.getProductById(addToCartDto.getProductId());
         System.out.println("product to add"+  product.getName());
-        cartService.addToCart(addToCartDto, product, user);
+        cartService.addToCart(addToCartDto, product, user, addToCartDto.getQuantityBySizes());
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Added to cart"), HttpStatus.CREATED);
-
     }
     @GetMapping("/")
     public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token) throws AuthenticationFailException {

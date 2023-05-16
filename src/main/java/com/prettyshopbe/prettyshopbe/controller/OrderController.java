@@ -1,6 +1,8 @@
 package com.prettyshopbe.prettyshopbe.controller;
 
 import com.prettyshopbe.prettyshopbe.common.ApiResponse;
+import com.prettyshopbe.prettyshopbe.dto.cart.AddToCartDto;
+import com.prettyshopbe.prettyshopbe.dto.cart.OrderDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.CheckoutItemDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.StripeResponse;
 import com.prettyshopbe.prettyshopbe.exceptions.AuthenticationFailException;
@@ -97,14 +99,14 @@ public class OrderController {
 
     // place order after checkout
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> placeOrder(@RequestParam("token") String token, @RequestParam("sessionId") String sessionId)
+    public ResponseEntity<ApiResponse> placeOrder(@RequestBody OrderDto orderDto, @RequestParam("token") String token, @RequestParam("sessionId") String sessionId)
             throws AuthenticationFailException {
         // validate token
         authenticationService.authenticate(token);
         // retrieve user
         User user = authenticationService.getUser(token);
         // place the order
-        orderService.placeOrder(user, sessionId);
+        orderService.placeOrder(user, sessionId, orderDto);
         return new ResponseEntity<>(new ApiResponse(true, "Order has been placed"), HttpStatus.CREATED);
     }
 

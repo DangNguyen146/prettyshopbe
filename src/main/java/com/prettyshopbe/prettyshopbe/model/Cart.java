@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Map;
 
 @Entity
 @Table(name="cart")
@@ -27,13 +28,17 @@ public class Cart {
 
 
     private int quantity;
+
+    private String quantityBySizes;
+
     public Cart() {
     }
 
-    public Cart(Product product, int quantity, User user){
+    public Cart(Product product, int quantity, User user, String quantityBySizes){
         this.user = user;
         this.product = product;
         this.quantity = quantity;
+        this.quantityBySizes = quantityBySizes;
         this.createdDate = new Date();
     }
 
@@ -75,5 +80,13 @@ public class Cart {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getQuantityBySizes() {
+        return quantityBySizes;
+    }
+
+    public void setQuantityBySizes(String quantityBySizes) {
+        this.quantityBySizes = quantityBySizes;
     }
 }

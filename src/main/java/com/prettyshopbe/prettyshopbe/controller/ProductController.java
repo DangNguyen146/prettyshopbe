@@ -110,4 +110,43 @@ public class ProductController {
         return new ResponseEntity<>(new ApiResponse(true, "Product has been deleted"), HttpStatus.OK);
     }
 
+    @PostMapping("/{productId}/addQuantityBySize")
+    public ResponseEntity<ApiResponse> addQuantityBySize(@PathVariable("productId") Integer productId, @RequestBody @Valid QuantityBySizeRequest quantityBySizeRequest) {
+        productService.addProductQuantityBySize(productId, quantityBySizeRequest.getSize(), quantityBySizeRequest.getQuantity());
+        return new ResponseEntity<>(new ApiResponse(true, "Quantity By Size for Product has been updated"), HttpStatus.OK);
+    }
+
+    @PostMapping("/{productId}/updateQuantityBySize")
+    public ResponseEntity<ApiResponse> updateQuantityBySize(@PathVariable("productId") Integer productId, @RequestBody @Valid QuantityBySizeRequest quantityBySizeRequest) {
+        productService.updateProductQuantityBySize(productId, quantityBySizeRequest.getSize(), quantityBySizeRequest.getQuantity());
+        return new ResponseEntity<>(new ApiResponse(true, "Quantity By Size for Product has been updated"), HttpStatus.OK);
+    }
+
+    @PostMapping("/{productId}/deleteQuantityBySize")
+    public ResponseEntity<ApiResponse> deleteQuantityBySize(@PathVariable("productId") Integer productId, @RequestParam(value = "size") String size) {
+        productService.deleteProductQuantityBySize(productId, size);
+        return new ResponseEntity<>(new ApiResponse(true, "Quantity By Size for Product has been deleted"), HttpStatus.OK);
+    }
+
+    public static class QuantityBySizeRequest {
+        private String size;
+        private Integer quantity;
+
+        public String getSize() {
+            return size;
+        }
+
+        public void setSize(String size) {
+            this.size = size;
+        }
+
+        public Integer getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(Integer quantity) {
+            this.quantity = quantity;
+        }
+    }
+
 }

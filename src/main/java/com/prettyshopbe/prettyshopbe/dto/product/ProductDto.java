@@ -3,6 +3,7 @@ package com.prettyshopbe.prettyshopbe.dto.product;
 import com.prettyshopbe.prettyshopbe.model.Product;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class ProductDto {
 
@@ -13,13 +14,20 @@ public class ProductDto {
     private String description;
     private @NotNull Integer categoryId;
 
+    private List<String> size;
 
-    public ProductDto(@NotNull String name, @NotNull String imageURL, @NotNull double price, @NotNull String description, @NotNull Integer categoryId) {
+    private List<Integer> quantityBySizes;
+
+
+    public ProductDto(@NotNull String name, @NotNull String imageURL, @NotNull double price, @NotNull String description, @NotNull Integer categoryId, List<String> size, List<Integer> quantityBySizes) {
         this.name = name;
         this.imageURL = imageURL;
         this.price = price;
         this.description = description;
         this.categoryId = categoryId;
+
+        this.size = size;
+        this.quantityBySizes = quantityBySizes;
     }
 
     public ProductDto(Product product) {
@@ -29,6 +37,9 @@ public class ProductDto {
         this.setDescription(product.getDescription());
         this.setPrice(product.getPrice());
         this.setCategoryId(product.getCategory().getId());
+
+        this.setSize(product.getSize());
+        this.setQuantityBySizes(product.getQuantityBySizes());
     }
 
     public void setId(Integer id) {
@@ -77,5 +88,21 @@ public class ProductDto {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public List<String> getSize() {
+        return size;
+    }
+
+    public void setSize(List<String> size) {
+        this.size = size;
+    }
+
+    public List<Integer> getQuantityBySizes() {
+        return quantityBySizes;
+    }
+
+    public void setQuantityBySizes(List<Integer> quantityBySizes) {
+        this.quantityBySizes = quantityBySizes;
     }
 }
