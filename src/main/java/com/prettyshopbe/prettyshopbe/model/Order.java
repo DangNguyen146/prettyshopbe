@@ -22,6 +22,10 @@ public class Order {
     @Column(name = "addpress")
     private String addpress;
 
+    @Column (name= "shipcod")
+    private Boolean shipcod;
+
+    //chua tra = false or da tra = true
     @Column(name = "status_payment")
     private Boolean statuspayment;
 
@@ -137,5 +141,13 @@ public class Order {
 
     public void setStatuspayment(Boolean statuspayment) {
         this.statuspayment = statuspayment;
+    }
+
+    public Boolean getShipcod() {
+        return shipcod;
+    }
+
+    public void setShipcod(Boolean shipcod) {
+        this.shipcod = shipcod;
     }
 }

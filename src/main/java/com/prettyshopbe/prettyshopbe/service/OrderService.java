@@ -111,7 +111,7 @@ public class OrderService {
         newOrder.setPhone(orderDto.getPhone()) ;
         newOrder.setAddpress(orderDto.getAddpress());
         newOrder.setFullname(orderDto.getFullname());
-        newOrder.setStatuspayment(orderDto.getStatuspayment());
+        newOrder.setShipcod(orderDto.getShipcod());
         orderRepository.save(newOrder);
 
         for (CartItemDto cartItemDto : cartItemDtoList) {

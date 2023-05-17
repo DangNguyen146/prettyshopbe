@@ -12,8 +12,8 @@ public class OrderDto {
     @Column(name = "addpress")
     private String addpress;
 
-    @Column(name = "status_payment")
-    private Boolean statuspayment;
+    @Column (name= "shipcod")
+    private Boolean shipcod;
 
     public String getPhone() {
         return phone;
@@ -39,11 +39,11 @@ public class OrderDto {
         this.addpress = addpress;
     }
 
-    public Boolean getStatuspayment() {
-        return statuspayment;
+    public Boolean getShipcod() {
+        return shipcod;
     }
 
-    public void setStatuspayment(Boolean statuspayment) {
-        this.statuspayment = statuspayment;
+    public void setShipcod(Boolean shipcod) {
+        this.shipcod = shipcod;
     }
 }

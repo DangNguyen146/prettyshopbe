@@ -130,4 +130,24 @@ public class OrderController {
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}/payment")
+    public ResponseEntity<Order> updateOrderPayment(@PathVariable Integer id,
+                                                   @RequestParam("token") String token,
+                                                   @RequestBody String status) throws AuthenticationFailException {
+        // authenticate and retrieve user
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+
+        // get the order by ID
+        Order existingOrder = orderService.getOrder(id);
+
+        // check if user has permission to update the order
+        if (user.isAdmin()) {
+            // update the order status
+            existingOrder.setStatuspayment(Boolean.valueOf(status));
+            orderService.updateProduct(status,existingOrder);
+        }
+        return new ResponseEntity<>(existingOrder, HttpStatus.OK);
+    }
+
 }
