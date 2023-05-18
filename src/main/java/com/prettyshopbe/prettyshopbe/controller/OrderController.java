@@ -1,8 +1,7 @@
 package com.prettyshopbe.prettyshopbe.controller;
 
-import com.prettyshopbe.prettyshopbe.common.ApiResponse;
+import com.prettyshopbe.prettyshopbe.common.OrderApiResponse;
 import com.prettyshopbe.prettyshopbe.dto.boolenStatusDto;
-import com.prettyshopbe.prettyshopbe.dto.cart.AddToCartDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.OrderDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.CheckoutItemDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.StripeResponse;
@@ -101,15 +100,15 @@ public class OrderController {
 
     // place order after checkout
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> placeOrder(@RequestBody OrderDto orderDto, @RequestParam("token") String token, @RequestParam("sessionId") String sessionId)
+    public ResponseEntity<OrderApiResponse> placeOrder(@RequestBody OrderDto orderDto, @RequestParam("token") String token, @RequestParam("sessionId") String sessionId)
             throws AuthenticationFailException {
         // validate token
         authenticationService.authenticate(token);
         // retrieve user
         User user = authenticationService.getUser(token);
         // place the order
-        orderService.placeOrder(user, sessionId, orderDto);
-        return new ResponseEntity<>(new ApiResponse(true, "Order has been placed"), HttpStatus.CREATED);
+        Order order = orderService.placeOrder(user, sessionId, orderDto);
+        return new ResponseEntity<OrderApiResponse>(new OrderApiResponse(true, "Order has been placed", order.getId()), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/status")

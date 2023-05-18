@@ -4,7 +4,6 @@ import com.prettyshopbe.prettyshopbe.dto.cart.CartDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.CartItemDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.OrderDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.CheckoutItemDto;
-import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.exceptions.OrderNotFoundException;
 import com.prettyshopbe.prettyshopbe.model.*;
 import com.prettyshopbe.prettyshopbe.respository.OrderItemsRepository;
@@ -96,7 +95,7 @@ public class OrderService {
         return Session.create(params);
     }
 
-    public void placeOrder(User user, String sessionId, OrderDto orderDto) {
+    public Order placeOrder(User user, String sessionId, OrderDto orderDto) {
         // first let get cart items for the user
         CartDto cartDto = cartService.listCartItems(user);
 
@@ -127,6 +126,7 @@ public class OrderService {
         }
         //
         cartService.deleteUserCartItems(user);
+        return newOrder;
     }
 
     public List<Order> listOrders(User user) {
