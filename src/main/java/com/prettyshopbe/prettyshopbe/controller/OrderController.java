@@ -133,7 +133,7 @@ public class OrderController {
     @PutMapping("/{id}/payment")
     public ResponseEntity<Order> updateOrderPayment(@PathVariable Integer id,
                                                    @RequestParam("token") String token,
-                                                   @RequestBody String status) throws AuthenticationFailException {
+                                                   @RequestBody Boolean status) throws AuthenticationFailException {
         // authenticate and retrieve user
         authenticationService.authenticate(token);
         User user = authenticationService.getUser(token);
@@ -145,7 +145,7 @@ public class OrderController {
         if (user.isAdmin()) {
             // update the order status
             existingOrder.setStatuspayment(Boolean.valueOf(status));
-            orderService.updateProduct(status,existingOrder);
+            // orderService.updateProduct(status.toString(),existingOrder);
         }
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }
