@@ -1,10 +1,12 @@
 package com.prettyshopbe.prettyshopbe.controller;
 
 import com.prettyshopbe.prettyshopbe.common.ApiResponse;
+import com.prettyshopbe.prettyshopbe.dto.boolenStatusDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.AddToCartDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.OrderDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.CheckoutItemDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.StripeResponse;
+import com.prettyshopbe.prettyshopbe.dto.stringStatusDto;
 import com.prettyshopbe.prettyshopbe.exceptions.AuthenticationFailException;
 import com.prettyshopbe.prettyshopbe.exceptions.OrderNotFoundException;
 import com.prettyshopbe.prettyshopbe.model.Order;
@@ -113,7 +115,7 @@ public class OrderController {
     @PutMapping("/{id}/status")
     public ResponseEntity<Order> updateOrderStatus(@PathVariable Integer id,
                                                    @RequestParam("token") String token,
-                                                   @RequestBody String status) throws AuthenticationFailException {
+                                                   @RequestBody stringStatusDto statusDto) throws AuthenticationFailException {
         // authenticate and retrieve user
         authenticationService.authenticate(token);
         User user = authenticationService.getUser(token);
@@ -124,16 +126,16 @@ public class OrderController {
         // check if user has permission to update the order
         if (user.isAdmin()) {
             // update the order status
-            existingOrder.setStatus(status);
-            orderService.updateProduct(status,existingOrder);
+            existingOrder.setStatus(statusDto.getStatus());
+            orderService.updateProduct(statusDto.getStatus(),existingOrder);
         }
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/payment")
     public ResponseEntity<Order> updateOrderPayment(@PathVariable Integer id,
-                                                   @RequestParam("token") String token,
-                                                   @RequestBody Boolean status) throws AuthenticationFailException {
+                                                    @RequestParam("token") String token,
+                                                    @RequestBody boolenStatusDto statusDto) throws AuthenticationFailException {
         // authenticate and retrieve user
         authenticationService.authenticate(token);
         User user = authenticationService.getUser(token);
@@ -144,8 +146,7 @@ public class OrderController {
         // check if user has permission to update the order
         if (user.isAdmin()) {
             // update the order status
-            existingOrder.setStatuspayment(Boolean.valueOf(status));
-            // orderService.updateProduct(status.toString(),existingOrder);
+            existingOrder.setStatuspayment(Boolean.valueOf(statusDto.getStatus()));
         }
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }
