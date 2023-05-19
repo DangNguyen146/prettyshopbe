@@ -20,10 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -41,6 +38,9 @@ public class OrderService {
 
     @Value("${BASE_URL}")
     private String baseURL;
+
+    @Value("${BASE_URL_PC}")
+    private String baseURLPC;
 
     @Value("${STRIPE_SECRET_KEY}")
     private String apiKey;
@@ -68,11 +68,15 @@ public class OrderService {
     }
 
     // create session from list of checkout items
-    public Session createSession(List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
-
+    public Session createSession(List<CheckoutItemDto> checkoutItemDtoList, String device) throws StripeException {
         // supply success and failure url for stripe
         String successURL = baseURL + "payment/success";
         String failedURL = baseURL + "payment/failed";
+        if(Objects.equals(device, "pc")){
+            successURL = baseURLPC + "payment/success";
+            failedURL = baseURLPC + "payment/failed";
+        }
+
 
         // set the private key
         Stripe.apiKey = apiKey;
