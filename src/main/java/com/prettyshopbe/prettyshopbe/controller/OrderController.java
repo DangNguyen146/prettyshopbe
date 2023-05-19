@@ -146,6 +146,7 @@ public class OrderController {
         if (user.isAdmin()) {
             // update the order status
             existingOrder.setStatuspayment(Boolean.valueOf(statusDto.getStatus()));
+            orderService.updateProductStatus(Boolean.valueOf(statusDto.getStatus()),existingOrder);
         }
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }

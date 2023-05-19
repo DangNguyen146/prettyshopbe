@@ -164,5 +164,9 @@ public class OrderService {
         order.setStatus(status);
         return orderRepository.save(order);
     }
+    public Order updateProductStatus(Boolean status, Order order){
+        order.setStatuspayment(status);
+        return orderRepository.save(order);
+    }
 
 }
