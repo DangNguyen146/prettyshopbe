@@ -143,11 +143,10 @@ public class OrderController {
         Order existingOrder = orderService.getOrder(id);
 
         // check if user has permission to update the order
-        if (user.isAdmin()) {
             // update the order status
-            existingOrder.setStatuspayment(Boolean.valueOf(statusDto.getStatus()));
-            orderService.updateProductStatus(Boolean.valueOf(statusDto.getStatus()),existingOrder);
-        }
+        existingOrder.setStatuspayment(Boolean.valueOf(statusDto.getStatus()));
+        orderService.updateProductStatus(Boolean.valueOf(statusDto.getStatus()),existingOrder);
+        
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }
 
