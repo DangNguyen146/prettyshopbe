@@ -180,8 +180,8 @@ public class UserController {
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
 
-        String username = "19521317@gm.uit.edu.vn"; // replace with your email address
-        String password = "sdsdajndjksndkjankj"; // replace with your email password
+        String username = "yuhuyle3@gmail.com"; // replace with your email address
+        String password = "11111"; // replace with your email password
 
         // Authenticate the user
         Authenticator auth = new Authenticator() {
