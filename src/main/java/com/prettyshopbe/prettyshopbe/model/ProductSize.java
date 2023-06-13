@@ -1,6 +1,7 @@
 package com.prettyshopbe.prettyshopbe.model;
 
 public class ProductSize {
+
     private String size;
     private int quantity;
 
