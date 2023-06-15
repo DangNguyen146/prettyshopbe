@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
  @Transactional
@@ -40,5 +41,9 @@ public class ProductTagService {
         currentProductTag.setDescription(productTag.getDescription());
         currentProductTag.setTag(productTag.getTag());
         productTagRespository.save(currentProductTag);
+    }
+
+    public Optional<ProductTag> findById(Integer tagId) {
+        return productTagRespository.findById(tagId);
     }
 }

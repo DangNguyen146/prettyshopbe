@@ -3,7 +3,7 @@ package com.prettyshopbe.prettyshopbe.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "product_tags")
+@Table(name = "ProductTag")
 public class ProductTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +12,7 @@ public class ProductTag {
     private String tag;
     private String description;
 
-     public ProductTag() {
+     public ProductTag(ProductTag productTag) {
      }
 
     public ProductTag(Integer id, String tag, String description) {
@@ -29,6 +29,8 @@ public class ProductTag {
         this.tag = tag;
         this.description = description;
     }
+
+
 
     public Integer getId() {
         return id;
