@@ -52,9 +52,45 @@ public class TagController {
         if (tag == null) {
             return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
         } else {
-            TagDto dto = new TagDto(tag.getId(), tag.getProducttag().getId(), ProductService.getDtoFromProduct(tag.getProduct()));
+            TagDto dto = new TagDto(tag.getId(), tag.getProducttag().getId(),
+                    ProductService.getDtoFromProduct(tag.getProduct()));
             return new ResponseEntity<TagDto>(dto, HttpStatus.CREATED);
         }
     }
+
+    @PutMapping("/{tagId}")
+    public ResponseEntity<TagDto> updateProductInTag(@PathVariable("tagId") Integer tagId,
+            @RequestParam("productId") Integer productId) {
+        Tag tag = tagService.updateProductInTag(tagId, productId);
+        if (tag == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            TagDto dto = new TagDto(tag.getId(), tag.getProducttag().getId(),
+                    ProductService.getDtoFromProduct(tag.getProduct()));
+            return new ResponseEntity<TagDto>(dto, HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/{tagId}")
+    public ResponseEntity<Void> deleteTag(@PathVariable("tagId") Integer tagId) {
+        boolean isDeleted = tagService.deleteTag(tagId);
+        if (isDeleted) {
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/random")
+    public ResponseEntity<TagDto> getRandomTag() {
+        Tag tag = tagService.getRandomTag();
+        if (tag == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            TagDto dto = new TagDto(tag.getId(), tag.getProducttag().getId(), ProductService.getDtoFromProduct(tag.getProduct()));
+            return new ResponseEntity<TagDto>(dto, HttpStatus.OK);
+        }
+    }
+
 
 }
