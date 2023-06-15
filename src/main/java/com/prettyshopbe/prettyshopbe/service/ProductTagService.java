@@ -29,4 +29,16 @@ public class ProductTagService {
     public void createProductTag(ProductTag productTag) {
         productTagRespository.save(productTag);
     }
+
+    public void removeProductTag(Integer id) {
+        productTagRespository.deleteById(id);
+    }
+
+    public void updateProductTag(Integer id, ProductTag productTag) {
+        ProductTag currentProductTag = productTagRespository.findById(id).get();
+
+        currentProductTag.setDescription(productTag.getDescription());
+        currentProductTag.setTag(productTag.getTag());
+        productTagRespository.save(currentProductTag);
+    }
 }
