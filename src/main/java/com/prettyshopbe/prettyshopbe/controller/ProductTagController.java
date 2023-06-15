@@ -31,20 +31,26 @@ public class ProductTagController {
 
     @GetMapping("/")
      public ResponseEntity<List<ProductTag>> getProductTag() {
-        System.out.println("da chay toi ay 0");
         List<ProductTag> body = productTagService.listProductag();
-         System.out.println("da chay toi ay 1");
          return new ResponseEntity<List<ProductTag>>(body, HttpStatus.OK);
      }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createProducTag(@Valid @RequestBody ProductTag productTag) {
-        // if (Helper.notNull(productTagService.readProductTag(productTag.getTag()))) {
-        //     return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Category already exists"),
-        //             HttpStatus.CONFLICT);
-        // }
+    public ResponseEntity<ApiResponse> createProducTag(@Valid @RequestBody ProductTag productTag) {        
         productTagService.createProductTag(productTag);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Created the category"), HttpStatus.CREATED);
+    }
+
+     @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> removeProductTag(@PathVariable Integer id) {
+        productTagService.removeProductTag(id);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Removed the product tag"), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse> updateProductTag(@PathVariable Integer id, @Valid @RequestBody ProductTag productTag) {
+        productTagService.updateProductTag(id, productTag);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Updated the product tag"), HttpStatus.OK);
     }
 
 }
