@@ -37,6 +37,10 @@ public class Tag {
         this.product = product;
     }
 
+    public Tag() {
+
+    }
+
 
     public Date getCreatedDate() {
         return createdDate;

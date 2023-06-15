@@ -45,6 +45,16 @@ public class TagController {
         return new ResponseEntity<List<ProductDto>>(products, HttpStatus.OK);
     }
 
-
+    @PostMapping("/{tagId}/add-product")
+    public ResponseEntity<TagDto> addProductToTag(@PathVariable("tagId") Integer tagId,
+            @RequestParam("productId") Integer productId) {
+        Tag tag = tagService.addProductToTag(tagId, productId);
+        if (tag == null) {
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
+        } else {
+            TagDto dto = new TagDto(tag.getId(), tag.getProducttag().getId(), ProductService.getDtoFromProduct(tag.getProduct()));
+            return new ResponseEntity<TagDto>(dto, HttpStatus.CREATED);
+        }
+    }
 
 }

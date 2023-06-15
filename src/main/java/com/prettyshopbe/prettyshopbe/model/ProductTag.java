@@ -1,5 +1,8 @@
 package com.prettyshopbe.prettyshopbe.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,8 +15,12 @@ public class ProductTag {
     private String tag;
     private String description;
 
-     public ProductTag(ProductTag productTag) {
-     }
+    public ProductTag() {
+    }
+
+
+    public ProductTag(ProductTag productTag) {
+    }
 
     public ProductTag(Integer id, String tag, String description) {
         this.id = id;
@@ -29,8 +36,6 @@ public class ProductTag {
         this.tag = tag;
         this.description = description;
     }
-
-
 
     public Integer getId() {
         return id;
