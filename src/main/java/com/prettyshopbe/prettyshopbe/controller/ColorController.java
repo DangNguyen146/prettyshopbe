@@ -2,8 +2,11 @@ package com.prettyshopbe.prettyshopbe.controller;
 
 
 import com.prettyshopbe.prettyshopbe.dto.ColorDto;
+import com.prettyshopbe.prettyshopbe.dto.ProductColorDto;
+import com.prettyshopbe.prettyshopbe.dto.ProductTagDto;
 import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.model.Color;
+import com.prettyshopbe.prettyshopbe.model.Tag;
 import com.prettyshopbe.prettyshopbe.respository.ColorRespository;
 import com.prettyshopbe.prettyshopbe.service.ColorService;
 import com.prettyshopbe.prettyshopbe.service.ProductColorService;
@@ -86,6 +89,23 @@ public class ColorController {
         } else {
             ColorDto dto = new ColorDto(color.getId(), color.getProductcolor().getId(), ProductService.getDtoFromProduct(color.getProduct()));
             return new ResponseEntity<ColorDto>(dto, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/product/{productId}/color")
+    public ResponseEntity<List<ProductColorDto>> getProductColorsByProductId(@PathVariable("productId") Integer productId) {
+        List<Color> productColors = colorService.getProductColorsByProductId(productId);
+
+        if (productColors.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<ProductColorDto> productColorDtos = new ArrayList<>();
+
+            for (Color productColor : productColors) {
+                productColorDtos.add(new ProductColorDto(productColor.getId(), productColor.getProductcolor().getColor(), productColor.getProductcolor().getDescription()));
+            }
+
+            return new ResponseEntity<>(productColorDtos, HttpStatus.OK);
         }
     }
 }

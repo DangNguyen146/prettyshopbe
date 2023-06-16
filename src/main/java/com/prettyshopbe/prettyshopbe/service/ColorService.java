@@ -4,6 +4,7 @@ package com.prettyshopbe.prettyshopbe.service;
 import com.prettyshopbe.prettyshopbe.model.Color;
 import com.prettyshopbe.prettyshopbe.model.Product;
 import com.prettyshopbe.prettyshopbe.model.ProductColor;
+import com.prettyshopbe.prettyshopbe.model.Tag;
 import com.prettyshopbe.prettyshopbe.respository.ColorRespository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,4 +78,7 @@ public class ColorService {
     }
 
 
+    public List<Color> getProductColorsByProductId(Integer productId) {
+        return colorRespoitory.findAllByProduct_Id(productId);
+    }
 }
