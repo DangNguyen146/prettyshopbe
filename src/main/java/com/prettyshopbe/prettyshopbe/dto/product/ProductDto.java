@@ -17,6 +17,7 @@ public class ProductDto {
     private List<String> size;
 
     private List<Integer> quantityBySizes;
+    private Integer accessCount;
 
 
     public ProductDto(@NotNull String name, @NotNull String imageURL, @NotNull double price, @NotNull String description, @NotNull Integer categoryId, List<String> size, List<Integer> quantityBySizes) {
@@ -28,6 +29,7 @@ public class ProductDto {
 
         this.size = size;
         this.quantityBySizes = quantityBySizes;
+        this.accessCount = accessCount;
     }
 
     public ProductDto(Product product) {
@@ -40,6 +42,15 @@ public class ProductDto {
 
         this.setSize(product.getSize());
         this.setQuantityBySizes(product.getQuantityBySizes());
+        this.setAccessCount(product.getAccessCount());
+    }
+
+    public Integer getAccessCount() {
+        return accessCount;
+    }
+
+    public void setAccessCount(Integer accessCount) {
+        this.accessCount = accessCount;
     }
 
     public void setId(Integer id) {

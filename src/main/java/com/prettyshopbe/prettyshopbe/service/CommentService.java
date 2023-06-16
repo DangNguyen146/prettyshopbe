@@ -48,4 +48,8 @@ public class CommentService {
     public void deleteComment(Long id, Integer userId) {
         commentRepository.deleteByIdAndUserId(id, userId);
     }
+
+    public Long getNumberOfCommentsByProductId(Integer productId) {
+        return commentRepository.countByProductId(productId);
+    }
 }

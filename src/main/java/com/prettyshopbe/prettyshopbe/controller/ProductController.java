@@ -9,6 +9,7 @@ import com.prettyshopbe.prettyshopbe.model.Product;
 import com.prettyshopbe.prettyshopbe.model.User;
 import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
 import com.prettyshopbe.prettyshopbe.service.AuthenticationService;
+import com.prettyshopbe.prettyshopbe.service.CommentService;
 import com.prettyshopbe.prettyshopbe.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -148,5 +149,30 @@ public class ProductController {
             this.quantity = quantity;
         }
     }
+
+
+    @GetMapping("/accesscount/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable("id") Integer id) {
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            // Increase access count of the product
+            product.setAccessCount(product.getAccessCount() + 1);
+            productService.updateProduct(product);
+
+            ProductDto dto = ProductService.getDtoFromProduct(product);
+            return new ResponseEntity<ProductDto>(dto, HttpStatus.OK);
+        }
+    }
+    @Autowired
+    CommentService commentService;
+
+    @GetMapping("/{productId}/comments/count")
+    public ResponseEntity<Long> getNumberOfComments(@PathVariable("productId") Integer productId) {
+        Long count = commentService.getNumberOfCommentsByProductId(productId);
+        return ResponseEntity.ok(count);
+    }
+
 
 }

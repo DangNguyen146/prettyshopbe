@@ -40,6 +40,9 @@ public class Product {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<Cart> carts;
 
+    // New field for access count
+    private Integer accessCount = 0;
+
 
     public Product(ProductDto productDto, Category category) {
         this.id = productDto.getId();
@@ -51,7 +54,10 @@ public class Product {
         this.size = productDto.getSize(); // Initialize product size for this product entity
         this.quantityBySizes = productDto.getQuantityBySizes(); // Initialize product size quantity for this product
                                                                 // entity
+        this.accessCount = 0;
     }
+
+
 
     public Product(String name, String imageURL, double price, String description, Category category, List<String> size, List<Integer> quantityBySizes) {
         super();
@@ -62,6 +68,15 @@ public class Product {
         this.category = category;
         this.size = size;
         this.quantityBySizes = quantityBySizes;
+        this.accessCount = 0;
+    }
+
+    public Integer getAccessCount() {
+        return accessCount;
+    }
+
+    public void setAccessCount(Integer accessCount) {
+        this.accessCount = accessCount;
     }
 
     public Product() {

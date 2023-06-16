@@ -1,19 +1,27 @@
 package com.prettyshopbe.prettyshopbe.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "ProductColor")
 public class ProductColor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String color;
     private String description;
 
     public ProductColor(String color, String description) {
         this.color = color;
         this.description = description;
+    }
+
+     public ProductColor() {
+    }
+
+
+    public ProductColor(ProductColor productColor) {
     }
 
     public String getColor() {
@@ -30,5 +38,13 @@ public class ProductColor {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

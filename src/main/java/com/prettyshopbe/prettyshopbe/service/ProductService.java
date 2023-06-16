@@ -130,4 +130,8 @@ public class ProductService {
             producRespository.save(product);
         }
     }
+
+    public Product updateProduct(Product product) {
+        return producRespository.save(product);
+    }
 }
