@@ -1,5 +1,6 @@
 package com.prettyshopbe.prettyshopbe.controller;
 
+import com.prettyshopbe.prettyshopbe.dto.ProductTagDto;
 import com.prettyshopbe.prettyshopbe.dto.TagDto;
 import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.model.Product;
@@ -91,6 +92,35 @@ public class TagController {
             return new ResponseEntity<TagDto>(dto, HttpStatus.OK);
         }
     }
+
+
+//    @GetMapping("/product/{productId}/tags")
+//    public ResponseEntity<List<Tag>> getProductTagsByProductId(@PathVariable("productId") Integer productId) {
+//        List<Tag> productTags = tagService.getProductTagsByProductId(productId);
+//
+//
+//            return new ResponseEntity<>(productTags, HttpStatus.OK);
+//
+//    }
+
+    @GetMapping("/product/{productId}/tags")
+    public ResponseEntity<List<ProductTagDto>> getProductTagsByProductId(@PathVariable("productId") Integer productId) {
+        List<Tag> productTags = tagService.getProductTagsByProductId(productId);
+
+        if (productTags.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<ProductTagDto> productTagDtos = new ArrayList<>();
+
+            for (Tag productTag : productTags) {
+                productTagDtos.add(new ProductTagDto(productTag.getId(), productTag.getProducttag().getTag(), productTag.getProducttag().getDescription()));
+            }
+
+            return new ResponseEntity<>(productTagDtos, HttpStatus.OK);
+        }
+    }
+
+
 
 
 }

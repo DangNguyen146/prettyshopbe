@@ -34,6 +34,10 @@ public class TagService {
         return tagRespoitory.findAllByProductTag_IdOrderByCreatedDateDesc(tagProductId);
     }
 
+    public List<Tag> getProductTagsByProductId(Integer productId) {
+        return tagRespoitory.findAllByProduct_Id(productId);
+    }
+
 
     public Tag addProductToTag(Integer tagId, Integer productId) {
         ProductTag productTag = productTagService.findById(tagId).get();
@@ -78,5 +82,7 @@ public class TagService {
             return tagList.get(randomIndex);
         }
     }
+
+
 
 }
