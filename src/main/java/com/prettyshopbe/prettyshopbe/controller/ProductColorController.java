@@ -2,6 +2,7 @@ package com.prettyshopbe.prettyshopbe.controller;
 
 import com.prettyshopbe.prettyshopbe.common.ApiResponse;
 import com.prettyshopbe.prettyshopbe.model.ProductColor;
+import com.prettyshopbe.prettyshopbe.model.ProductTag;
 import com.prettyshopbe.prettyshopbe.respository.ProductColorRespository;
 import com.prettyshopbe.prettyshopbe.service.ProductColorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,15 @@ public class ProductColorController {
         productColorService.updateProductColor(id, productColor);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Updated the product color"), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductColor> getProductTagById(@PathVariable Integer id) {
+        ProductColor productColor = productColorService.findById(id).get();
+        if (productColor != null) {
+            return new ResponseEntity<ProductColor>(productColor, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<ProductColor   >(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

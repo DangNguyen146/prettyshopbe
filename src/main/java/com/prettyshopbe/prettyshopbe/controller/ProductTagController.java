@@ -53,4 +53,15 @@ public class ProductTagController {
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Updated the product tag"), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductTag> getProductTagById(@PathVariable Integer id) {
+        ProductTag productTag = productTagService.findById(id).get();
+        if (productTag != null) {
+            return new ResponseEntity<ProductTag>(productTag, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<ProductTag>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }
