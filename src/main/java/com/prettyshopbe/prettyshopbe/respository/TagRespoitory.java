@@ -13,4 +13,6 @@ public interface TagRespoitory extends JpaRepository<Tag, Integer> {
     List<Tag> findAllByProductTag_IdOrderByCreatedDateDesc(Integer productTagId);
 
     List<Tag> findAllByProduct_Id(Integer productId);
+
+    List<Tag> findByNameContainsIgnoreCase(String name);
 }
