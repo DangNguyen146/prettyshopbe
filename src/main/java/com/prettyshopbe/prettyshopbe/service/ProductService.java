@@ -62,6 +62,7 @@ public class ProductService {
 
     public void addProduct(ProductDto productDto, Category category) {
         Product product = getProductFromDto(productDto, category);
+        product.setCreatedDate(new Date());
         producRespository.save(product);
     }
 
@@ -113,6 +114,7 @@ public class ProductService {
         Optional<Product> optionalProduct = producRespository.findById(productId);
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
+            product.setCreatedDate(new Date());
             List<String> sizeList = product.getSize();
             List<Integer> quantityBySizes = product.getQuantityBySizes();
             int index = sizeList.indexOf(size);
@@ -139,6 +141,7 @@ public class ProductService {
     }
 
     public Product updateProduct(Product product) {
+        product.setCreatedDate(new Date());
         return producRespository.save(product);
     }
 }
