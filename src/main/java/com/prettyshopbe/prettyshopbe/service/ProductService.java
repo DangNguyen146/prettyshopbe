@@ -39,7 +39,7 @@ public class ProductService {
         return productDtos;
     }
     public Page<ProductDto> listProducts(Pageable pageable) {
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdDate").ascending());
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdDate").descending());
         return producRespository.findAll(pageRequest).map(product -> new ProductDto(product));
     }
 
