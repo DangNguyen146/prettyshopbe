@@ -5,17 +5,13 @@ import com.prettyshopbe.prettyshopbe.dto.boolenStatusDto;
 import com.prettyshopbe.prettyshopbe.dto.cart.OrderDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.CheckoutItemDto;
 import com.prettyshopbe.prettyshopbe.dto.checkout.StripeResponse;
-import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import com.prettyshopbe.prettyshopbe.dto.stringStatusDto;
 import com.prettyshopbe.prettyshopbe.exceptions.AuthenticationFailException;
 import com.prettyshopbe.prettyshopbe.exceptions.OrderNotFoundException;
 import com.prettyshopbe.prettyshopbe.model.Order;
-import com.prettyshopbe.prettyshopbe.model.Product;
 import com.prettyshopbe.prettyshopbe.model.User;
-import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
 import com.prettyshopbe.prettyshopbe.service.AuthenticationService;
 import com.prettyshopbe.prettyshopbe.service.OrderService;
-import com.prettyshopbe.prettyshopbe.service.ProductService;
 import com.stripe.exception.StripeException;
 
 import com.stripe.model.checkout.Session;
@@ -135,14 +131,6 @@ public class OrderController {
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }
 
-
-    @Autowired
-    ProductService productService;
-
-    @Autowired
-    CategoryRepo categoryRepo;
-
-
     @PutMapping("/{id}/payment")
     public ResponseEntity<Order> updateOrderPayment(@PathVariable Integer id,
                                                     @RequestParam("token") String token,
@@ -158,17 +146,6 @@ public class OrderController {
             // update the order status
         existingOrder.setStatuspayment(Boolean.valueOf(statusDto.getStatus()));
         orderService.updateProductStatus(Boolean.valueOf(statusDto.getStatus()),existingOrder);
-
-        Product product = productService.getProductById(id);
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            // Increase access count of the product
-            product.setAccessCount(product.getAccessCount() + 1);
-            productService.updateProduct(product);
-
-            ProductDto dto = ProductService.getDtoFromProduct(product);
-        }
         
         return new ResponseEntity<>(existingOrder, HttpStatus.OK);
     }

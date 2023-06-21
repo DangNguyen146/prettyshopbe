@@ -8,6 +8,8 @@ import com.prettyshopbe.prettyshopbe.respository.CategoryRepo;
 import com.prettyshopbe.prettyshopbe.respository.ProducRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,8 +38,10 @@ public class ProductService {
         return productDtos;
     }
     public Page<ProductDto> listProducts(Pageable pageable) {
-        return producRespository.findAll(pageable).map(product -> new ProductDto(product));
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdDate").descending());
+        return producRespository.findAll(pageRequest).map(product -> new ProductDto(product));
     }
+
 
 
     public static ProductDto getDtoFromProduct(Product product) {
@@ -52,7 +56,7 @@ public class ProductService {
 
 
     public Page<Product> getProductsByCategoryId(Integer categoryId, Pageable pageable) {
-        return producRespository.findByCategoryId(categoryId, pageable);
+        return producRespository.findByCategoryIdOrderByCreatedDateDesc(categoryId, pageable);
     }
 
     public void addProduct(ProductDto productDto, Category category) {

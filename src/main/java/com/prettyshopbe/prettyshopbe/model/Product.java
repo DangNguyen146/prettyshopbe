@@ -5,6 +5,7 @@ import com.prettyshopbe.prettyshopbe.dto.product.ProductDto;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,31 @@ public class Product {
     // New field for access count
     private Integer accessCount = 0;
 
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public Product(Integer id, String name, String imageURL, double price, String description, List<String> size, List<Integer> quantityBySizes, Category category, List<WishList> wishListList, List<Cart> carts, Integer accessCount, Date createdDate) {
+        this.id = id;
+        this.name = name;
+        this.imageURL = imageURL;
+        this.price = price;
+        this.description = description;
+        this.size = size;
+        this.quantityBySizes = quantityBySizes;
+        this.category = category;
+        this.wishListList = wishListList;
+        this.carts = carts;
+        this.accessCount = accessCount;
+        this.createdDate = new Date();
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Product(ProductDto productDto, Category category) {
         this.id = productDto.getId();
@@ -55,6 +81,7 @@ public class Product {
         this.quantityBySizes = productDto.getQuantityBySizes(); // Initialize product size quantity for this product
                                                                 // entity
         this.accessCount = 0;
+        this.createdDate = new Date();
     }
 
 
@@ -69,6 +96,7 @@ public class Product {
         this.size = size;
         this.quantityBySizes = quantityBySizes;
         this.accessCount = 0;
+        this.createdDate = new Date();
     }
 
     public Integer getAccessCount() {
