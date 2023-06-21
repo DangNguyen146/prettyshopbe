@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +68,7 @@ public class ProductService {
     public void updateProduct(Integer productID, ProductDto productDto, Category category) {
         Product product = getProductFromDto(productDto, category);
         product.setId(productID);
+        product.setCreatedDate(new Date());
         producRespository.save(product);
     }
 
@@ -93,6 +95,7 @@ public class ProductService {
         Optional<Product> optionalProduct = producRespository.findById(productId);
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
+            product.setCreatedDate(new Date());
             List<String> sizeList = product.getSize();
             List<Integer> quantityBySizesList = product.getQuantityBySizes();
             int index = sizeList.indexOf(size);
